@@ -1,5 +1,6 @@
 {
     "name": "buzzingpixel/craft-static",
+    "version": "1.0.0",
     "description": "Static file caching for Craft 3",
     "type": "craft-plugin",
     "keywords": [
@@ -29,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "buzzingpixel\\static\\": "src/"
+            "buzzingpixel\\craftstatic\\": "src/"
         }
     },
     "extra": {
@@ -37,9 +38,9 @@
         "handle": "static",
         "developer": "TJ Draper",
         "developerUrl": "https://buzzingpixel.com",
-        "schemaVersion": "0.0.1",
+        "schemaVersion": "1.0.0",
         "hasCpSettings": false,
         "hasCpSection": false,
-        "class": "buzzingpixel\\static\\Static"
+        "class": "buzzingpixel\\craftstatic\\Craftstatic"
     }
 }
