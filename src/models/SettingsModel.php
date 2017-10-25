@@ -24,9 +24,11 @@ class SettingsModel extends Model
             return;
         }
 
+        $sep = DIRECTORY_SEPARATOR;
+
         $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
 
-        $this->cachePath =  "{$docRoot}/cache";
+        $this->cachePath =  "{$docRoot}{$sep}cache";
     }
 
     /** @var string $cachePath */
