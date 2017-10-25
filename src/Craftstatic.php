@@ -9,9 +9,11 @@
 namespace buzzingpixel\craftstatic;
 
 use Craft;
-use craft\services\Elements;
+use craft\utilities\ClearCaches;
 use yii\base\Event;
 use craft\base\Plugin;
+use craft\services\Elements;
+use craft\events\RegisterCacheOptionsEvent;
 use buzzingpixel\craftstatic\models\SettingsModel;
 use buzzingpixel\craftstatic\services\StaticHandlerService;
 use buzzingpixel\craftstatic\twigextensions\CraftStaticTwigExtension;
@@ -39,6 +41,18 @@ class Craftstatic extends Plugin
             Elements::EVENT_AFTER_SAVE_ELEMENT,
             function () {
                 self::getStaticHandler()->clearCache();
+            }
+        );
+
+        Event::on(
+            ClearCaches::class,
+            ClearCaches::EVENT_REGISTER_CACHE_OPTIONS,
+            function (RegisterCacheOptionsEvent $event) {
+                $event->options[] = [
+                    'key' => 'craft-static-caches',
+                    'label' => Craft::t('static', 'Static File Caches'),
+                    'action' => [self::$plugin->getStaticHandler(), 'clearCache']
+                ];
             }
         );
     }
