@@ -1,0 +1,45 @@
+{
+    "name": "buzzingpixel/craft-static",
+    "description": "Static file caching for Craft 3",
+    "type": "craft-plugin",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "craft-static"
+    ],
+    "authors": [
+        {
+            "name": "TJ Draper",
+            "email": "tj@buzzingpixel.com",
+            "homepage": "https://buzzingpixel.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "craftcms/cms": "^3.0.0-beta.29",
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "buzzingpixel\\static\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "File Content",
+        "handle": "static",
+        "developer": "TJ Draper",
+        "developerUrl": "https://buzzingpixel.com",
+        "schemaVersion": "0.0.1",
+        "hasCpSettings": false,
+        "hasCpSection": false,
+        "class": "buzzingpixel\\static\\Static"
+    }
+}
