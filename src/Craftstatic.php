@@ -9,6 +9,8 @@
 namespace buzzingpixel\craftstatic;
 
 use Craft;
+use craft\services\Elements;
+use yii\base\Event;
 use craft\base\Plugin;
 use buzzingpixel\craftstatic\models\SettingsModel;
 use buzzingpixel\craftstatic\services\StaticHandlerService;
@@ -31,6 +33,14 @@ class Craftstatic extends Plugin
         self::$plugin = $this;
 
         Craft::$app->view->twig->addExtension(new CraftStaticTwigExtension());
+
+        Event::on(
+            Elements::class,
+            Elements::EVENT_AFTER_SAVE_ELEMENT,
+            function () {
+                self::getStaticHandler()->clearCache();
+            }
+        );
     }
 
     /**
