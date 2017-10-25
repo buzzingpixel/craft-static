@@ -22,6 +22,9 @@ class StaticHandlerService extends Component
     /** @var string $cachePath */
     private $cachePath;
 
+    /** @var bool $nixBasedClearCache */
+    private $nixBasedClearCache;
+
     /** @var Request $requestService */
     private $requestService;
 
@@ -90,6 +93,11 @@ class StaticHandlerService extends Component
      */
     public function clearCache()
     {
+        if ($this->nixBasedClearCache) {
+            shell_exec("rm -rf {$this->cachePath}/*");
+            return;
+        }
+
         $di = new RecursiveDirectoryIterator(
             $this->cachePath,
             FilesystemIterator::SKIP_DOTS

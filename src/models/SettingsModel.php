@@ -31,4 +31,7 @@ class SettingsModel extends Model
 
     /** @var string $cachePath */
     public $cachePath;
+
+    /** @var bool $nixBasedClearCache */
+    public $nixBasedClearCache = true;
 }

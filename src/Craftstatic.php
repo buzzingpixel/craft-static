@@ -8,10 +8,10 @@
 
 namespace buzzingpixel\craftstatic;
 
-use buzzingpixel\craftstatic\models\SettingsModel;
-use buzzingpixel\craftstatic\services\StaticHandlerService;
 use Craft;
 use craft\base\Plugin;
+use buzzingpixel\craftstatic\models\SettingsModel;
+use buzzingpixel\craftstatic\services\StaticHandlerService;
 use buzzingpixel\craftstatic\twigextensions\CraftStaticTwigExtension;
 
 /**
@@ -48,8 +48,11 @@ class Craftstatic extends Plugin
      */
     public function getStaticHandler() : StaticHandlerService
     {
+        /** @var SettingsModel $settings */
+        $settings = $this->getSettings();
         return new StaticHandlerService([
-            'cachePath' => $this->getSettings()->cachePath,
+            'cachePath' => $settings->cachePath,
+            'nixBasedClearCache' => $settings->nixBasedClearCache === true,
             'requestService' => Craft::$app->getRequest(),
         ]);
     }
