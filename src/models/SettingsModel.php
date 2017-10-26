@@ -8,7 +8,9 @@
 
 namespace buzzingpixel\craftstatic\models;
 
+use Craft;
 use craft\base\Model;
+use craft\console\Application as ConsoleApplication;
 
 /**
  * Class SettingsModel
@@ -20,7 +22,10 @@ class SettingsModel extends Model
      */
     public function init()
     {
-        if (! isset($_SERVER['DOCUMENT_ROOT']) || ! $_SERVER['DOCUMENT_ROOT']) {
+        if (! isset($_SERVER['DOCUMENT_ROOT']) ||
+            ! $_SERVER['DOCUMENT_ROOT'] ||
+            Craft::$app instanceof ConsoleApplication
+        ) {
             return;
         }
 
@@ -32,7 +37,7 @@ class SettingsModel extends Model
     }
 
     /** @var string $cachePath */
-    public $cachePath;
+    public $cachePath = false;
 
     /** @var bool $nixBasedClearCache */
     public $nixBasedClearCache = true;

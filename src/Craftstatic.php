@@ -9,12 +9,13 @@
 namespace buzzingpixel\craftstatic;
 
 use Craft;
-use craft\utilities\ClearCaches;
 use yii\base\Event;
 use craft\base\Plugin;
 use craft\services\Elements;
+use craft\utilities\ClearCaches;
 use craft\events\RegisterCacheOptionsEvent;
 use buzzingpixel\craftstatic\models\SettingsModel;
+use craft\console\Application as ConsoleApplication;
 use buzzingpixel\craftstatic\services\StaticHandlerService;
 use buzzingpixel\craftstatic\twigextensions\CraftStaticTwigExtension;
 
@@ -55,6 +56,11 @@ class Craftstatic extends Plugin
                 ];
             }
         );
+
+        // Add in our console commands
+        if (Craft::$app instanceof ConsoleApplication) {
+            $this->controllerNamespace = 'buzzingpixel\craftstatic\console\controllers';
+        }
     }
 
     /**

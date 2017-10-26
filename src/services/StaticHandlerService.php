@@ -13,6 +13,7 @@ use FilesystemIterator;
 use craft\base\Component;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use yii\db\Exception;
 
 /**
  * Class StaticHandlerService
@@ -40,6 +41,10 @@ class StaticHandlerService extends Component
             $this->{$key} = $val;
         }
 
+        if (! $this->cachePath) {
+            return;
+        }
+
         $sep = DIRECTORY_SEPARATOR;
 
         $this->cachePath = rtrim($this->cachePath, $sep) . $sep;
@@ -53,6 +58,10 @@ class StaticHandlerService extends Component
      */
     public function handleContent(string $content, $cache = true) : string
     {
+        if (! $this->cachePath) {
+            return $content;
+        }
+
         $content = str_replace(
             [
                 '<![CDATA[YII-BLOCK-HEAD]]>',
@@ -93,6 +102,10 @@ class StaticHandlerService extends Component
      */
     public function clearCache()
     {
+        if (! $this->cachePath) {
+            throw new Exception('The cache path is not defined');
+        }
+
         if ($this->nixBasedClearCache) {
             shell_exec("rm -rf {$this->cachePath}/*");
             return;
