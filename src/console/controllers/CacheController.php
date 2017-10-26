@@ -13,7 +13,7 @@ use yii\console\Controller;
 use buzzingpixel\craftstatic\Craftstatic;
 
 /**
- * Cache command
+ * Static Cache Command
  */
 class CacheController extends Controller
 {
