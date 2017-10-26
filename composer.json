@@ -35,7 +35,7 @@
     },
     "extra": {
         "name": "Craft Static",
-        "handle": "static",
+        "handle": "craft-static",
         "developer": "TJ Draper",
         "developerUrl": "https://buzzingpixel.com",
         "schemaVersion": "1.0.0",
