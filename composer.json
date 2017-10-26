@@ -1,6 +1,6 @@
 {
     "name": "buzzingpixel/craft-static",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Static file caching for Craft 3",
     "type": "craft-plugin",
     "keywords": [
