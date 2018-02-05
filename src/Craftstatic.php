@@ -51,7 +51,7 @@ class Craftstatic extends Plugin
             function (RegisterCacheOptionsEvent $event) {
                 $event->options[] = [
                     'key' => 'craft-static-caches',
-                    'label' => Craft::t('static', 'Static File Caches'),
+                    'label' => 'Static File Caches',
                     'action' => [self::$plugin->getStaticHandler(), 'clearCache']
                 ];
             }
