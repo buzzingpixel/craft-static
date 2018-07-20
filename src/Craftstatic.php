@@ -35,7 +35,7 @@ class Craftstatic extends Plugin
         parent::init();
         self::$plugin = $this;
 
-        Craft::$app->view->twig->addExtension(new CraftStaticTwigExtension());
+        Craft::$app->view->registerTwigExtension(new CraftStaticTwigExtension());
 
         Event::on(
             Elements::class,
