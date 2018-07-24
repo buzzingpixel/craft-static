@@ -8,10 +8,12 @@
 
 namespace buzzingpixel\craftstatic\twigextensions;
 
+use Twig_Extension;
+
 /**
  * Class CraftStaticTwigExtension
  */
-class CraftStaticTwigExtension extends \Twig_Extension
+class CraftStaticTwigExtension extends Twig_Extension
 {
     /**
      * @inheritdoc
