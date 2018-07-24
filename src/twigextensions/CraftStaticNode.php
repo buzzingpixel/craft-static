@@ -8,8 +8,8 @@
 
 namespace buzzingpixel\craftstatic\twigextensions;
 
-use buzzingpixel\craftstatic\Craftstatic;
 use Twig_Compiler;
+use buzzingpixel\craftstatic\Craftstatic;
 
 /**
  * Class CraftStaticNode
@@ -41,7 +41,7 @@ class CraftStaticNode extends \Twig_Node
             ->write("\$compiledBody = ob_get_clean();\n")
             ->write(
                 'echo ' .
-                Craftstatic::className() .
+                Craftstatic::class .
                 "::\$plugin->getStaticHandler()->handleContent(\$compiledBody, \$cache);\n"
             );
     }
