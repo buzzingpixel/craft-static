@@ -10,11 +10,13 @@
 There are two globally configurable options:
 
 - `cachePath` - defaults to `$_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'cache'`
-- `nixBasedClearCache` - defaults to `true`. Leave set to true on Unix based systems because it clears the cache by executing `rm -rf` which is much faster. Otherwise, PHP has to iterate through each file and directory in the cache path and delete them individually, which can take some times.
+- `nixBasedClearCache` - defaults to `true`. Leave set to true on Unix based systems because it clears the cache by executing `rm -rf` which is much faster. Otherwise, PHP has to iterate through each file and directory in the cache path and delete them individually, which can take some time.
 
 ## Usage
 
-The entire contents of your HTML out put should be wrapped in the `{% static %}` tag so it's best to put this in the outermost layout file. You can also specify whether the tag should actually cache or not so you can disable caching in some scenarios and still wrap your entire contents in the tag.
+### Usage in Twig
+
+The entire contents of your HTML output should be wrapped in the `{% static %}` tag so it's best to put this in the outermost layout file. You can also specify whether the tag should actually cache or not so you can disable caching in some scenarios and still wrap your entire contents in the tag.
 
 Example:
 
@@ -32,6 +34,48 @@ Example:
         </html>
     {% endminify %}
 {% endstatic %}
+```
+
+### Alternative usage in a controller
+
+If you would like to use a controller to render your output, or otherwise statically cache from PHP, you can use:
+
+```php
+\buzzingpixel\craftstatic\Craftstatic::$plugin->getStaticHandler()->handleContent();
+```
+
+A full(er) example:
+
+```php
+<?php
+
+namespace some\module\namespace;
+
+use yii\web\Response;
+use craft\web\Controller;
+use buzzingpixel\craftstatic\Craftstatic;
+
+class MyController extends Controller
+{
+    protected $allowAnonymous = true;
+    
+    public function actionSomeAction(): Response
+    {
+        // ... do stuff
+
+        $response = $this->renderTemplate($template, $vars);
+        
+        // Potentially check an environment variable so you don't cache
+        // in dev environment
+        if (getenv('STATIC_CACHE_ENABLED') === 'true') {
+            Craftstatic::$plugin->getStaticHandler()->handleContent(
+                $response->data
+            );
+        }
+
+        return $response;
+    }
+}
 ```
 
 ### Cache clearing
@@ -53,7 +97,7 @@ To purge static cache from the command line, run: `./craft craft-static/cache/pu
 
 ## License
 
-Copyright 2017 BuzzingPixel, LLC
+Copyright 2018 BuzzingPixel, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
