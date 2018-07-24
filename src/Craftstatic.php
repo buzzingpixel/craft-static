@@ -9,6 +9,7 @@
 namespace buzzingpixel\craftstatic;
 
 use Craft;
+use LogicException;
 use yii\base\Event;
 use craft\base\Plugin;
 use craft\services\Elements;
@@ -29,6 +30,7 @@ class Craftstatic extends Plugin
 
     /**
      * Initializes plugin
+     * @throws LogicException
      */
     public function init()
     {
