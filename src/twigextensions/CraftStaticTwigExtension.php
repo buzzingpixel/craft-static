@@ -2,16 +2,18 @@
 
 /**
  * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2017 BuzzingPixel, LLC
+ * @copyright 2018 BuzzingPixel, LLC
  * @license Apache-2.0
  */
 
 namespace buzzingpixel\craftstatic\twigextensions;
 
+use Twig_Extension;
+
 /**
  * Class CraftStaticTwigExtension
  */
-class CraftStaticTwigExtension extends \Twig_Extension
+class CraftStaticTwigExtension extends Twig_Extension
 {
     /**
      * @inheritdoc

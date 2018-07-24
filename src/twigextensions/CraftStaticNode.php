@@ -2,14 +2,14 @@
 
 /**
  * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2017 BuzzingPixel, LLC
+ * @copyright 2018 BuzzingPixel, LLC
  * @license Apache-2.0
  */
 
 namespace buzzingpixel\craftstatic\twigextensions;
 
-use buzzingpixel\craftstatic\Craftstatic;
 use Twig_Compiler;
+use buzzingpixel\craftstatic\Craftstatic;
 
 /**
  * Class CraftStaticNode
@@ -23,7 +23,7 @@ class CraftStaticNode extends \Twig_Node
     {
         $cache = $this->getAttribute('cache');
 
-        if (is_bool($cache)) {
+        if (\is_bool($cache)) {
             $cache = $cache ? 'true' : 'false';
             $compiler->write("\$cache = {$cache};\n");
         } elseif ($cache === 0 || $cache === 1) {
@@ -41,7 +41,7 @@ class CraftStaticNode extends \Twig_Node
             ->write("\$compiledBody = ob_get_clean();\n")
             ->write(
                 'echo ' .
-                Craftstatic::className() .
+                Craftstatic::class .
                 "::\$plugin->getStaticHandler()->handleContent(\$compiledBody, \$cache);\n"
             );
     }

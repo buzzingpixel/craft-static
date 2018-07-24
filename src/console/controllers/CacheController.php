@@ -2,7 +2,7 @@
 
 /**
  * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2017 BuzzingPixel, LLC
+ * @copyright 2018 BuzzingPixel, LLC
  * @license Apache-2.0
  */
 
@@ -10,6 +10,7 @@ namespace buzzingpixel\craftstatic\console\controllers;
 
 use yii\helpers\Console;
 use yii\console\Controller;
+use yii\db\Exception as DbException;
 use buzzingpixel\craftstatic\Craftstatic;
 
 /**
@@ -19,6 +20,7 @@ class CacheController extends Controller
 {
     /**
      * Purges all static cache
+     * @throws DbException
      */
     public function actionPurge()
     {

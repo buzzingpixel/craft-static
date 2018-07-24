@@ -2,13 +2,14 @@
 
 /**
  * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2017 BuzzingPixel, LLC
+ * @copyright 2018 BuzzingPixel, LLC
  * @license Apache-2.0
  */
 
 namespace buzzingpixel\craftstatic;
 
 use Craft;
+use LogicException;
 use yii\base\Event;
 use craft\base\Plugin;
 use craft\services\Elements;
@@ -29,13 +30,14 @@ class Craftstatic extends Plugin
 
     /**
      * Initializes plugin
+     * @throws LogicException
      */
     public function init()
     {
         parent::init();
         self::$plugin = $this;
 
-        Craft::$app->view->twig->addExtension(new CraftStaticTwigExtension());
+        Craft::$app->view->registerTwigExtension(new CraftStaticTwigExtension());
 
         Event::on(
             Elements::class,
