@@ -8,12 +8,12 @@
 
 namespace buzzingpixel\craftstatic\services;
 
+use LogicException;
 use craft\web\Request;
 use FilesystemIterator;
 use craft\base\Component;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use yii\db\Exception;
 
 /**
  * Class StaticHandlerService
@@ -99,11 +99,12 @@ class StaticHandlerService extends Component
 
     /**
      * Clears the cache
+     * @throws LogicException
      */
     public function clearCache()
     {
         if (! $this->cachePath) {
-            throw new Exception('The cache path is not defined');
+            throw new LogicException('The cache path is not defined');
         }
 
         if ($this->nixBasedClearCache) {
