@@ -24,6 +24,7 @@ class CraftStaticNode extends \Twig_Node
         $cache = $this->getAttribute('cache');
 
         if (is_bool($cache)) {
+        if (\is_bool($cache)) {
             $cache = $cache ? 'true' : 'false';
             $compiler->write("\$cache = {$cache};\n");
         } elseif ($cache === 0 || $cache === 1) {
