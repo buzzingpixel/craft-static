@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  utility:
+    image: buzzingpixel/utility:1.1.0
+    container_name: utility-craft-static
+    environment:
+      HOSTNAME: utility-craft-static
+    volumes:
+      - .:/app
+      - cache-volume:/cache-volume
+      - composer-home-volume:/composer-home-volume
+      - db-volume:/db-volume
+    command: bash -c "chmod +x /app/scripts/dev/devUtilityScript.sh && /app/scripts/dev/devUtilityScript.sh"
+    networks:
+      common-craft-static-network:
+  web:
+    image: buzzingpixel/nginx:1.0.2
+    container_name: nginx-craft-static
+    environment:
+      HOSTNAME: nginx-craft-static
+    ports:
+      - ${HOST_NGINX_PORT}:${DOCKER_NGINX_PORT}
+    volumes:
+      - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/site.conf
+      - .:/app:delegated
+      - cache-volume:/app/cache
+      - ${SSL_CERT}:/fullchain.pem
+      - ${SSL_KEY}:/privkey.pem
+    networks:
+      common-craft-static-network:
+        aliases:
+          - ${SERVER_NAME_ALIAS}
+  php:
+    image: buzzingpixel/php7.2:1.0.6
+    container_name: php-craft-static
+    environment:
+      HOSTNAME: php-craft-static
+      COMPOSER_HOME: /composer-home-volume
+    volumes:
+      - ./serverConfig/php/php-custom-config.ini:/usr/local/etc/php/conf.d/php-custom-config.ini
+      - ./serverConfig/php/php-config-dev.ini:/usr/local/etc/php/conf.d/php-env-config.ini
+      - ./serverConfig/php/fpm-www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - .:/app:delegated
+      - cache-volume:/app/cache
+      - composer-home-volume:/composer-home-volume
+    networks:
+      common-craft-static-network:
+  db:
+    image: buzzingpixel/mariadb:2.0.1
+    container_name: db-craft-static
+    restart: always
+    environment:
+      HOSTNAME: db-craft-static
+    user: "1000:50"
+    volumes:
+      - db-volume:/var/lib/mysql:delegated
+    ports:
+      - 38253:3306
+    networks:
+      common-craft-static-network:
+
+volumes:
+  cache-volume:
+  composer-home-volume:
+  db-volume:
+
+networks:
+  common-craft-static-network:
