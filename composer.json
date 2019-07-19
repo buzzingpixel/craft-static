@@ -1,8 +1,8 @@
 {
     "name": "buzzingpixel/craft-static",
-    "version": "1.0.4",
-    "type": "craft-plugin",
     "description": "Static file caching for Craft 3",
+    "version": "2.0.0",
+    "type": "craft-plugin",
     "license": "Apache-2.0",
     "keywords": [
         "craft",
@@ -18,17 +18,35 @@
             "homepage": "https://buzzingpixel.com"
         }
     ],
+    "require": {
+        "php": ">=7.2",
+        "craftcms/cms": "^3.1.0"
+    },
+    "require-dev": {
+        "codedungeon/phpunit-result-printer": "^0.26.2",
+        "doctrine/coding-standard": "^6.0",
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "phpmd/phpmd": "^2.6",
+        "phpstan/phpstan": "^0.11.12",
+        "phpstan/phpstan-deprecation-rules": "^0.11.2",
+        "phpunit/phpunit": "^8.2",
+        "roave/security-advisories": "dev-master",
+        "squizlabs/php_codesniffer": "^3.4",
+        "symfony/var-dumper": "^4.3"
+    },
     "autoload": {
         "psr-4": {
             "buzzingpixel\\craftstatic\\": "src/"
         }
     },
-    "require": {
-        "php": ">=7.0.0",
-        "craftcms/cms": "^3.0.0"
+    "autoload-dev": {
+        "psr-4": {
+            "buzzingpixel\\tests\\": "tests"
+        }
     },
-    "require-dev": {
-        "roave/security-advisories": "dev-master"
+    "config": {
+        "bin-compat": "full",
+        "sort-packages": true
     },
     "extra": {
         "name": "Craft Static",
