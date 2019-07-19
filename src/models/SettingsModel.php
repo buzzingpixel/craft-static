@@ -31,7 +31,7 @@ class SettingsModel extends Model
         $this->cachePath = $docRoot . $sep . 'cache';
     }
 
-    /** @var string $cachePath */
+    /** @var string|bool $cachePath */
     public $cachePath = false;
 
     /** @var bool $nixBasedClearCache */

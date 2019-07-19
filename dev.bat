@@ -11,6 +11,9 @@ if "%cmd%" == "" (
     echo The following commands are available:
     echo   .\dev up
     echo   .\dev down
+    echo   .\dev test
+    echo   .\dev phpstan [args]
+    echo   .\dev phpunit [args]
     echo   .\dev craft [args]
     echo   .\dev composer [args]
     echo   .\dev login [args]
@@ -32,6 +35,12 @@ if "%cmd%" == "craft" (
     docker exec -it --user root --workdir /app php-craft-static bash -c "php %allArgs%"
 )
 
+if "%cmd%" == "test" (
+    set valid=true
+    call :phpstan
+    call :phpunit
+)
+
 if "%cmd%" == "composer" (
     set valid=true
     docker exec -it --user root --workdir /app php-craft-static bash -c "%allArgs%"
@@ -47,4 +56,12 @@ if not "%valid%" == "true" (
     exit /b 1
 )
 
+exit /b 0
+
+:phpstan
+    docker exec -it --user root --workdir /app php-craft-static bash -c "chmod +x /app/vendor/bin/phpstan && /app/vendor/bin/phpstan analyse src %allArgsExceptFirst%"
+exit /b 0
+
+:phpunit
+    docker exec -it --user root --workdir /app php-craft-static bash -c "chmod +x /app/vendor/bin/phpunit && /app/vendor/bin/phpunit --configuration /app/phpunit.xml %allArgsExceptFirst%"
 exit /b 0

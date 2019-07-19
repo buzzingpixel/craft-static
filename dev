@@ -25,6 +25,9 @@ if [[ -z "${cmd}" ]]; then
     printf "${Green}The following commands are available:\n${Yellow}";
     printf "  ./dev up\n";
     printf "  ./dev down\n";
+    printf "  ./dev test\n";
+    printf "  ./dev phpstan [args]\n";
+    printf "  ./dev phpunit [args]\n";
     printf "  ./dev craft [args]\n";
     printf "  ./dev composer [args]\n";
     printf "  ./dev login [args]${Reset}\n";
@@ -32,28 +35,38 @@ fi
 
 if [[ "${cmd}" = "up" ]]; then
     valid=true;
-    docker-compose -f docker-compose.yml -p craft-static up -d
-    docker exec -it --user root --workdir /app php-craft-static bash -c "cd /app && composer install"
+    docker-compose -f docker-compose.yml -p craft-static up -d;
+    docker exec -it --user root --workdir /app php-craft-static bash -c "cd /app && composer install";
 fi
 
 if [[ "${cmd}" = "down" ]]; then
     valid=true;
-    docker-compose -f docker-compose.yml -p craft-static down
+    docker-compose -f docker-compose.yml -p craft-static down;
+fi
+
+if [[ "${cmd}" = "phpstan" ]] || [[ "${cmd}" = "test" ]]; then
+    valid=true;
+    docker exec -it --user root --workdir /app php-craft-static bash -c "chmod +x /app/vendor/bin/phpstan && /app/vendor/bin/phpstan analyse src ${allArgsExceptFirst}"
+fi
+
+if [[ "${cmd}" = "phpunit" ]] || [[ "${cmd}" = "test" ]]; then
+    valid=true;
+    docker exec -it --user root --workdir /app php-craft-static bash -c "chmod +x /app/vendor/bin/phpunit && /app/vendor/bin/phpunit --configuration /app/phpunit.xml ${allArgsExceptFirst}"
 fi
 
 if [[ "${cmd}" = "craft" ]]; then
     valid=true;
-    docker exec -it --user root --workdir /app/testenvironment/public php-craft-static bash -c "php index.php ${allArgsExceptFirst}"
+    docker exec -it --user root --workdir /app/testenvironment/public php-craft-static bash -c "php index.php ${allArgsExceptFirst}";
 fi
 
 if [[ "${cmd}" = "composer" ]]; then
     valid=true;
-    docker exec -it --user root --workdir /app php-craft-static bash -c "${allArgs}"
+    docker exec -it --user root --workdir /app php-craft-static bash -c "${allArgs}";
 fi
 
 if [[ "${cmd}" = "login" ]]; then
     valid=true;
-    docker exec -it --user root ${secondArg}-craft-static bash
+    docker exec -it --user root ${secondArg}-craft-static bash;
 fi
 
 if [[ "${valid}" != "true" ]]; then
