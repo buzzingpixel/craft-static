@@ -1,28 +1,21 @@
 <?php
 
-/**
- * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2018 BuzzingPixel, LLC
- * @license Apache-2.0
- */
+declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic;
 
-use Craft;
-use LogicException;
-use yii\base\Event;
-use craft\base\Plugin;
-use craft\services\Elements;
-use craft\utilities\ClearCaches;
-use craft\events\RegisterCacheOptionsEvent;
 use buzzingpixel\craftstatic\models\SettingsModel;
-use craft\console\Application as ConsoleApplication;
 use buzzingpixel\craftstatic\services\StaticHandlerService;
 use buzzingpixel\craftstatic\twigextensions\CraftStaticTwigExtension;
+use Craft;
+use craft\base\Plugin;
+use craft\console\Application as ConsoleApplication;
+use craft\events\RegisterCacheOptionsEvent;
+use craft\services\Elements;
+use craft\utilities\ClearCaches;
+use LogicException;
+use yii\base\Event;
 
-/**
- * Class Craftstatic
- */
 class Craftstatic extends Plugin
 {
     /** @var Craftstatic $plugin */
@@ -30,9 +23,10 @@ class Craftstatic extends Plugin
 
     /**
      * Initializes plugin
+     *
      * @throws LogicException
      */
-    public function init()
+    public function init() : void
     {
         parent::init();
         self::$plugin = $this;
@@ -42,7 +36,7 @@ class Craftstatic extends Plugin
         Event::on(
             Elements::class,
             Elements::EVENT_AFTER_SAVE_ELEMENT,
-            function () {
+            static function () : void {
                 self::getStaticHandler()->clearCache();
             }
         );
@@ -50,24 +44,25 @@ class Craftstatic extends Plugin
         Event::on(
             ClearCaches::class,
             ClearCaches::EVENT_REGISTER_CACHE_OPTIONS,
-            function (RegisterCacheOptionsEvent $event) {
+            static function (RegisterCacheOptionsEvent $event) : void {
                 $event->options[] = [
                     'key' => 'craft-static-caches',
                     'label' => 'Static File Caches',
-                    'action' => [self::$plugin->getStaticHandler(), 'clearCache']
+                    'action' => [self::$plugin->getStaticHandler(), 'clearCache'],
                 ];
             }
         );
 
         // Add in our console commands
-        if (Craft::$app instanceof ConsoleApplication) {
-            $this->controllerNamespace = 'buzzingpixel\craftstatic\console\controllers';
+        if (! (Craft::$app instanceof ConsoleApplication)) {
+            return;
         }
+
+        $this->controllerNamespace = 'buzzingpixel\craftstatic\console\controllers';
     }
 
     /**
      * Creates the settings model
-     * @return SettingsModel
      */
     protected function createSettingsModel() : SettingsModel
     {
@@ -76,12 +71,12 @@ class Craftstatic extends Plugin
 
     /**
      * Gets the static handler service
-     * @return StaticHandlerService
      */
     public function getStaticHandler() : StaticHandlerService
     {
         /** @var SettingsModel $settings */
         $settings = $this->getSettings();
+
         return new StaticHandlerService([
             'cachePath' => $settings->cachePath,
             'nixBasedClearCache' => $settings->nixBasedClearCache === true,

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace buzzingpixel\testenvironment;
@@ -9,6 +10,8 @@ class CustomErrorHandler extends ErrorHandler
 {
     /**
      * If this isn't here, Yii gets cranky
+     *
+     * @var mixed
      */
     public $errorAction;
 }

@@ -1,19 +1,13 @@
 <?php
 
-/**
- * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2018 BuzzingPixel, LLC
- * @license Apache-2.0
- */
+declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\twigextensions;
 
-use Twig_Extension;
+use Twig\Extension\AbstractExtension;
+use Twig\TokenParser\TokenParserInterface;
 
-/**
- * Class CraftStaticTwigExtension
- */
-class CraftStaticTwigExtension extends Twig_Extension
+class CraftStaticTwigExtension extends AbstractExtension
 {
     /**
      * @inheritdoc
@@ -25,13 +19,11 @@ class CraftStaticTwigExtension extends Twig_Extension
 
     /**
      * Returns the token parser instances to add to the existing list.
-     * @return array An array of Twig_TokenParserInterface or
-     * Twig_TokenParserBrokerInterface instances
+     *
+     * @return TokenParserInterface[]
      */
     public function getTokenParsers() : array
     {
-        return [
-            new CraftStaticTokenParser()
-        ];
+        return [new CraftStaticTokenParser()];
     }
 }

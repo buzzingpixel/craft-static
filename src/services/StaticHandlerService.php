@@ -1,23 +1,27 @@
 <?php
 
-/**
- * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2018 BuzzingPixel, LLC
- * @license Apache-2.0
- */
+declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\services;
 
-use LogicException;
+use craft\base\Component;
 use craft\web\Request;
 use FilesystemIterator;
-use craft\base\Component;
-use RecursiveIteratorIterator;
+use LogicException;
 use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use const DIRECTORY_SEPARATOR;
+use function file_put_contents;
+use function is_dir;
+use function ltrim;
+use function mkdir;
+use function rmdir;
+use function rtrim;
+use function shell_exec;
+use function sprintf;
+use function str_replace;
+use function unlink;
 
-/**
- * Class StaticHandlerService
- */
 class StaticHandlerService extends Component
 {
     /** @var string $cachePath */
@@ -31,6 +35,7 @@ class StaticHandlerService extends Component
 
     /**
      * StaticHandlerService constructor
+     *
      * @param array $config
      */
     public function __construct(array $config = [])
@@ -52,11 +57,8 @@ class StaticHandlerService extends Component
 
     /**
      * Handles the incoming content
-     * @param string $content
-     * @param bool $cache
-     * @return string
      */
-    public function handleContent(string $content, $cache = true) : string
+    public function handleContent(string $content, bool $cache = true) : string
     {
         if (! $this->cachePath) {
             return $content;
@@ -92,23 +94,25 @@ class StaticHandlerService extends Component
             return $content;
         }
 
-        file_put_contents("{$cachePath}/index.html", $content);
+        file_put_contents($cachePath . '/index.html', $content);
 
         return $content;
     }
 
     /**
      * Clears the cache
+     *
      * @throws LogicException
      */
-    public function clearCache()
+    public function clearCache() : void
     {
         if (! $this->cachePath) {
             throw new LogicException('The cache path is not defined');
         }
 
         if ($this->nixBasedClearCache) {
-            shell_exec("rm -rf {$this->cachePath}/*");
+            shell_exec(sprintf('rm -rf %s/*', $this->cachePath));
+
             return;
         }
 

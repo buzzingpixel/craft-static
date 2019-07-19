@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+$secure   = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
 $protocol = $secure ? 'https://' : 'http://';
 
 $siteUrl = getenv('SITE_URL');

@@ -1,26 +1,21 @@
 <?php
 
-/**
- * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2018 BuzzingPixel, LLC
- * @license Apache-2.0
- */
+declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\models;
 
 use Craft;
 use craft\base\Model;
 use craft\console\Application as ConsoleApplication;
+use const DIRECTORY_SEPARATOR;
+use function rtrim;
 
-/**
- * Class SettingsModel
- */
 class SettingsModel extends Model
 {
     /**
      * Initializes model
      */
-    public function init()
+    public function init() : void
     {
         if (! isset($_SERVER['DOCUMENT_ROOT']) ||
             ! $_SERVER['DOCUMENT_ROOT'] ||
@@ -33,7 +28,7 @@ class SettingsModel extends Model
 
         $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
 
-        $this->cachePath =  "{$docRoot}{$sep}cache";
+        $this->cachePath = $docRoot . $sep . 'cache';
     }
 
     /** @var string $cachePath */

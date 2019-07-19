@@ -1,29 +1,21 @@
 <?php
 
-/**
- * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2018 BuzzingPixel, LLC
- * @license Apache-2.0
- */
+declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\twigextensions;
 
-use Twig_Compiler;
 use buzzingpixel\craftstatic\Craftstatic;
+use Twig\Compiler;
+use Twig\Node\Node;
+use function is_bool;
 
-/**
- * Class CraftStaticNode
- */
-class CraftStaticNode extends \Twig_Node
+class CraftStaticNode extends Node
 {
-    /**
-     * @param Twig_Compiler $compiler
-     */
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Compiler $compiler) : void
     {
         $cache = $this->getAttribute('cache');
 
-        if (\is_bool($cache)) {
+        if (is_bool($cache)) {
             $cache = $cache ? 'true' : 'false';
             $compiler->write("\$cache = {$cache};\n");
         } elseif ($cache === 0 || $cache === 1) {

@@ -9,7 +9,7 @@ use yii\base\Module;
 
 class TestEnvironmentModule extends Module
 {
-    public function init()
+    public function init() : void
     {
         $this->setUp();
         parent::init();
