@@ -3,9 +3,8 @@
     <option name="myName" value="Project Default" />
     <inspection_tool class="PhpCSValidationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="CODING_STANDARD" value="Doctrine" />
-      <option name="USE_INSTALLED_PATHS" value="true" />
       <option name="INSTALLED_PATHS" value="$PROJECT_DIR$/vendor/doctrine/coding-standard/lib/Doctrine" />
-      <option name="EXTENSIONS" value="php,js,css,inc" />
+      <option name="EXTENSIONS" value="php,js" />
     </inspection_tool>
   </profile>
 </component>
