@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="CraftStatic PHP Files" pattern="file[craft-static]:src//*||file[craft-static]:testenvironment/config//*||file[craft-static]:testenvironment/public//*||file[craft-static]:testenvironment/src//*||file[craft-static]:tests//*" />
+</component>
