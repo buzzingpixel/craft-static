@@ -2,6 +2,7 @@ version: '3'
 
 services:
   utility:
+    env_file: .env
     image: buzzingpixel/utility:1.1.0
     container_name: utility-craft-static
     environment:
@@ -15,6 +16,7 @@ services:
     networks:
       common-craft-static-network:
   web:
+    env_file: .env
     image: buzzingpixel/nginx:1.0.2
     container_name: nginx-craft-static
     environment:
@@ -24,7 +26,7 @@ services:
     volumes:
       - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/site.conf
       - .:/app:delegated
-      - cache-volume:/app/cache
+      - cache-volume:/app/testenvironment/storage
       - ${SSL_CERT}:/fullchain.pem
       - ${SSL_KEY}:/privkey.pem
     networks:
@@ -32,6 +34,7 @@ services:
         aliases:
           - ${SERVER_NAME_ALIAS}
   php:
+    env_file: .env
     image: buzzingpixel/php7.2:1.0.6
     container_name: php-craft-static
     environment:
@@ -42,11 +45,12 @@ services:
       - ./serverConfig/php/php-config-dev.ini:/usr/local/etc/php/conf.d/php-env-config.ini
       - ./serverConfig/php/fpm-www.conf:/usr/local/etc/php-fpm.d/www.conf
       - .:/app:delegated
-      - cache-volume:/app/cache
+      - cache-volume:/app/testenvironment/storage
       - composer-home-volume:/composer-home-volume
     networks:
       common-craft-static-network:
   db:
+    env_file: .env
     image: buzzingpixel/mariadb:2.0.1
     container_name: db-craft-static
     restart: always

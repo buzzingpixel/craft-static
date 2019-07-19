@@ -25,7 +25,9 @@
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.26.2",
         "doctrine/coding-standard": "^6.0",
+        "filp/whoops": "^2.4",
         "friendsofphp/php-cs-fixer": "^2.15",
+        "lucidtaz/yii2-whoops": "dev-master",
         "phpmd/phpmd": "^2.6",
         "phpstan/phpstan": "^0.11.12",
         "phpstan/phpstan-deprecation-rules": "^0.11.2",
@@ -41,7 +43,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "buzzingpixel\\tests\\": "tests"
+            "buzzingpixel\\tests\\": "tests",
+            "buzzingpixel\\testenvironment\\": "testenvironment/src"
         }
     },
     "config": {

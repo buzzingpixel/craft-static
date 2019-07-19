@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "288b3d1032d582a9b6cbc63f47ca8322",
+    "content-hash": "3c1d672e3169341b2e60625dc0293e6d",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -323,16 +323,16 @@
         },
         {
             "name": "craftcms/cms",
-            "version": "3.2.4.1",
+            "version": "3.2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/craftcms/cms.git",
-                "reference": "7729334012f02bdc43f7155b0e3781ea9c3bfa31"
+                "reference": "e44b9d1b6dd94198d71825345c3ba437d2fd1e91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftcms/cms/zipball/7729334012f02bdc43f7155b0e3781ea9c3bfa31",
-                "reference": "7729334012f02bdc43f7155b0e3781ea9c3bfa31",
+                "url": "https://api.github.com/repos/craftcms/cms/zipball/e44b9d1b6dd94198d71825345c3ba437d2fd1e91",
+                "reference": "e44b9d1b6dd94198d71825345c3ba437d2fd1e91",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
                 "craftcms",
                 "yii2"
             ],
-            "time": "2019-07-17T21:07:15+00:00"
+            "time": "2019-07-19T19:56:35+00:00"
         },
         {
             "name": "craftcms/oauth2-craftid",
@@ -696,16 +696,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.9",
+            "version": "2.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "128cc721d771ec2c46ce59698f4ca42b73f71b25"
+                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/128cc721d771ec2c46ce59698f4ca42b73f71b25",
-                "reference": "128cc721d771ec2c46ce59698f4ca42b73f71b25",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
+                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
                 "shasum": ""
             },
             "require": {
@@ -715,7 +715,8 @@
             "require-dev": {
                 "dominicsayers/isemail": "dev-master",
                 "phpunit/phpunit": "^4.8.35||^5.7||^6.0",
-                "satooshi/php-coveralls": "^1.0.1"
+                "satooshi/php-coveralls": "^1.0.1",
+                "symfony/phpunit-bridge": "^4.4@dev"
             },
             "suggest": {
                 "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
@@ -749,7 +750,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-06-23T10:14:27+00:00"
+            "time": "2019-07-19T20:52:08+00:00"
         },
         {
             "name": "elvanto/litemoji",
@@ -3602,6 +3603,67 @@
             "time": "2019-03-17T17:37:11+00:00"
         },
         {
+            "name": "filp/whoops",
+            "version": "2.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filp/whoops.git",
+                "reference": "6fb502c23885701a991b0bba974b1a8eb6673577"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/6fb502c23885701a991b0bba974b1a8eb6673577",
+                "reference": "6fb502c23885701a991b0bba974b1a8eb6673577",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5.9 || ^7.0",
+                "psr/log": "^1.0.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9 || ^1.0",
+                "phpunit/phpunit": "^4.8.35 || ^5.7",
+                "symfony/var-dumper": "^2.6 || ^3.0 || ^4.0"
+            },
+            "suggest": {
+                "symfony/var-dumper": "Pretty print complex values better with var-dumper available",
+                "whoops/soap": "Formats errors as SOAP responses"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Whoops\\": "src/Whoops/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Dobreira",
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error handling for cool kids",
+            "homepage": "https://filp.github.io/whoops/",
+            "keywords": [
+                "error",
+                "exception",
+                "handling",
+                "library",
+                "throwable",
+                "whoops"
+            ],
+            "time": "2019-07-04T09:00:00+00:00"
+        },
+        {
             "name": "friendsofphp/php-cs-fixer",
             "version": "v2.15.1",
             "source": {
@@ -3796,6 +3858,47 @@
                 "versions"
             ],
             "time": "2018-06-13T13:22:40+00:00"
+        },
+        {
+            "name": "lucidtaz/yii2-whoops",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LucidTaZ/yii2-whoops.git",
+                "reference": "b95184f80800658f717b6a832a82564c47cb6abe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LucidTaZ/yii2-whoops/zipball/b95184f80800658f717b6a832a82564c47cb6abe",
+                "reference": "b95184f80800658f717b6a832a82564c47cb6abe",
+                "shasum": ""
+            },
+            "require": {
+                "filp/whoops": "^2.1",
+                "php": ">=5.6.0",
+                "yiisoft/yii2": "^2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "lucidtaz\\yii2whoops\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thijs Zumbrink",
+                    "email": "thijs@schalpoen.nl"
+                }
+            ],
+            "description": "Yii2 bindings for Whoops error handler",
+            "time": "2019-02-06T14:57:47+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -6971,6 +7074,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "lucidtaz/yii2-whoops": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,

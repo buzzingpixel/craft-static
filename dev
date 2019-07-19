@@ -43,7 +43,7 @@ fi
 
 if [[ "${cmd}" = "craft" ]]; then
     valid=true;
-    docker exec -it --user root --workdir /app php-craft-static bash -c "php ${allArgs}"
+    docker exec -it --user root --workdir /app/testenvironment/public php-craft-static bash -c "php index.php ${allArgsExceptFirst}"
 fi
 
 if [[ "${cmd}" = "composer" ]]; then
