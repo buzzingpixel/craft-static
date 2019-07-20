@@ -3,6 +3,7 @@
 #------------------------------------
 
 # ...custom project excludes
+/testenvironment/storage/logs/*
 
 
 
