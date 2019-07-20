@@ -76,6 +76,19 @@ class ProcessEntryTracking extends Component
             $entry->postDate->format(Craftstatic::DATE_TIME_PRECISION_FORMAT)
         );
 
+        if (! $postDate) {
+            $this->dbConnection->createCommand()->delete(
+                '{{%craftstatictracking}}',
+                [
+                    'elementId' => $entry->id,
+                    'type' => 'future_entry',
+                ]
+            )
+                ->execute();
+
+            return;
+        }
+
         $postDate = $postDate->setTimezone($this->utcTimezone);
 
         if ($this->currentTime->getTimestamp() >= $postDate->getTimestamp()) {
@@ -147,6 +160,19 @@ class ProcessEntryTracking extends Component
             Craftstatic::DATE_TIME_PRECISION_FORMAT,
             $entry->expiryDate->format(Craftstatic::DATE_TIME_PRECISION_FORMAT)
         );
+
+        if (! $expiryDate) {
+            $this->dbConnection->createCommand()->delete(
+                '{{%craftstatictracking}}',
+                [
+                    'elementId' => $entry->id,
+                    'type' => 'expiring_entry',
+                ]
+            )
+                ->execute();
+
+            return;
+        }
 
         $expiryDate = $expiryDate->setTimezone($this->utcTimezone);
 

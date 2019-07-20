@@ -45,6 +45,10 @@ class Craftstatic extends Plugin
             Elements::class,
             Elements::EVENT_AFTER_SAVE_ELEMENT,
             static function (ElementEvent $elementEvent) : void {
+                if (! $elementEvent->element) {
+                    return;
+                }
+
                 if ($elementEvent->element->getIsDraft()) {
                     return;
                 }
