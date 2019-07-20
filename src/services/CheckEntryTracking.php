@@ -7,7 +7,6 @@ namespace buzzingpixel\craftstatic\services;
 use buzzingpixel\craftstatic\Craftstatic;
 use buzzingpixel\craftstatic\factories\QueryFactory;
 use craft\base\Component;
-use craft\db\Connection as DbConnection;
 use DateTimeImmutable;
 use DateTimeZone;
 use Throwable;
@@ -18,8 +17,6 @@ class CheckEntryTracking extends Component
     private $queryFactory;
     /** @var StaticHandlerService */
     private $staticHandler;
-    /** @var DbConnection */
-    private $dbConnection;
 
     /** @var DateTimeImmutable */
     private $currentTime;
@@ -55,11 +52,5 @@ class CheckEntryTracking extends Component
         }
 
         $this->staticHandler->clearCache();
-
-        $this->dbConnection->createCommand()->delete(
-            '{{%craftstatictracking}}',
-            '`cacheBustOnUtcDate` <= "' . $this->currentTime->format(Craftstatic::MYSQL_DATE_TIME_FORMAT) . '"'
-        )
-        ->execute();
     }
 }

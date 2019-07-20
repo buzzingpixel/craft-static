@@ -17,6 +17,8 @@ class CacheController extends Controller
 {
     /**
      * Purges all static cache
+     *
+     * @throws Throwable
      */
     public function actionPurge() : void
     {

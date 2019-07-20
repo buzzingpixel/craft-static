@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\services;
 
+use buzzingpixel\craftstatic\Craftstatic;
 use craft\base\Component;
+use craft\db\Connection as DbConnection;
 use craft\web\Request;
+use DateTimeImmutable;
+use DateTimeZone;
 use FilesystemIterator;
 use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Throwable;
 use const DIRECTORY_SEPARATOR;
 use function file_put_contents;
 use function is_dir;
@@ -33,10 +38,18 @@ class StaticHandlerService extends Component
     /** @var Request $requestService */
     private $requestService;
 
+    /** @var DbConnection */
+    private $dbConnection;
+
+    /** @var DateTimeImmutable */
+    private $currentTime;
+
     /**
      * StaticHandlerService constructor
      *
-     * @param array $config
+     * @param mixed[] $config
+     *
+     * @throws Throwable
      */
     public function __construct(array $config = [])
     {
@@ -53,6 +66,8 @@ class StaticHandlerService extends Component
         $sep = DIRECTORY_SEPARATOR;
 
         $this->cachePath = rtrim($this->cachePath, $sep) . $sep;
+
+        $this->currentTime = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 
     /**
@@ -102,7 +117,7 @@ class StaticHandlerService extends Component
     /**
      * Clears the cache
      *
-     * @throws LogicException
+     * @throws Throwable
      */
     public function clearCache() : void
     {
@@ -112,6 +127,8 @@ class StaticHandlerService extends Component
 
         if ($this->nixBasedClearCache) {
             shell_exec(sprintf('rm -rf %s/*', $this->cachePath));
+
+            $this->updateTrackingTable();
 
             return;
         }
@@ -129,5 +146,19 @@ class StaticHandlerService extends Component
         foreach ($ri as $file) {
             $file->isDir() ?  rmdir($file) : unlink($file);
         }
+
+        $this->updateTrackingTable();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function updateTrackingTable() : void
+    {
+        $this->dbConnection->createCommand()->delete(
+            '{{%craftstatictracking}}',
+            '`cacheBustOnUtcDate` <= "' . $this->currentTime->format(Craftstatic::MYSQL_DATE_TIME_FORMAT) . '"'
+        )
+        ->execute();
     }
 }

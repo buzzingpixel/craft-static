@@ -18,7 +18,6 @@ use craft\events\ElementEvent;
 use craft\events\RegisterCacheOptionsEvent;
 use craft\services\Elements;
 use craft\utilities\ClearCaches;
-use LogicException;
 use Throwable;
 use yii\base\Event;
 
@@ -32,7 +31,7 @@ class Craftstatic extends Plugin
     public static $plugin;
 
     /**
-     * @throws LogicException
+     * @throws Throwable
      */
     public function init() : void
     {
@@ -88,6 +87,9 @@ class Craftstatic extends Plugin
         return new SettingsModel();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getStaticHandler() : StaticHandlerService
     {
         /** @var SettingsModel $settings */
@@ -97,6 +99,7 @@ class Craftstatic extends Plugin
             'cachePath' => $settings->cachePath,
             'nixBasedClearCache' => $settings->nixBasedClearCache === true,
             'requestService' => Craft::$app->getRequest(),
+            'dbConnection' => Craft::$app->getDb(),
         ]);
     }
 
@@ -119,7 +122,6 @@ class Craftstatic extends Plugin
         return new CheckEntryTracking([
             'queryFactory' => new QueryFactory(),
             'staticHandler' => $this->getStaticHandler(),
-            'dbConnection' => Craft::$app->getDb(),
         ]);
     }
 }
