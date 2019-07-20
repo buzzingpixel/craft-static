@@ -1,19 +1,13 @@
 <?php
 
-/**
- * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2018 BuzzingPixel, LLC
- * @license Apache-2.0
- */
+declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\twigextensions;
 
-use Twig_Token;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
 
-/**
- * Class CraftStaticTokenParser
- */
-class CraftStaticTokenParser extends \Twig_TokenParser
+class CraftStaticTokenParser extends AbstractTokenParser
 {
     /**
      * @inheritdoc
@@ -26,26 +20,24 @@ class CraftStaticTokenParser extends \Twig_TokenParser
     /**
      * @inheritdoc
      */
-    public function parse(Twig_Token $token)
+    public function parse(Token $token)
     {
-        $attributes = [
-            'cache' => true
-        ];
+        $attributes = ['cache' => true];
 
         $stream = $this->parser->getStream();
 
-        if ($stream->test(Twig_Token::NAME_TYPE, 'cache')) {
+        if ($stream->test(Token::NAME_TYPE, 'cache')) {
             $stream->next();
             $attributes['cache'] = $stream->getCurrent()->getValue();
             $stream->next();
         }
 
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
         $nodes['body'] = $this->parser->subparse([
             $this,
-            'decideStaticEnd'
+            'decideStaticEnd',
         ], true);
-        $stream->expect(Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
         return new CraftStaticNode(
             $nodes,
@@ -55,11 +47,7 @@ class CraftStaticTokenParser extends \Twig_TokenParser
         );
     }
 
-    /**
-     * @param \Twig_Token $token
-     * @return bool
-     */
-    public function decideStaticEnd(Twig_Token $token) : bool
+    public function decideStaticEnd(Token $token) : bool
     {
         return $token->test('endstatic');
     }

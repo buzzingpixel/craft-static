@@ -1,0 +1,18 @@
+{
+    "buttons": [
+        "html",
+        "bold",
+        "ialic",
+        "underline",
+        "deleted",
+        "sub",
+        "sup",
+        "line",
+        "lists",
+        "link",
+        "image",
+        "file"
+    ],
+    "plugins": ["fullscreen", "counter", "specialchars"],
+    "toolbarFixed": true
+}

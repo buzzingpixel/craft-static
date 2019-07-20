@@ -1,23 +1,32 @@
 <?php
 
-/**
- * @author TJ Draper <tj@buzzingpixel.com>
- * @copyright 2018 BuzzingPixel, LLC
- * @license Apache-2.0
- */
+declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\services;
 
-use LogicException;
-use craft\web\Request;
-use FilesystemIterator;
+use buzzingpixel\craftstatic\Craftstatic;
 use craft\base\Component;
-use RecursiveIteratorIterator;
+use craft\db\Connection as DbConnection;
+use craft\web\Request;
+use DateTimeImmutable;
+use DateTimeZone;
+use FilesystemIterator;
+use LogicException;
 use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use Throwable;
+use const DIRECTORY_SEPARATOR;
+use function file_put_contents;
+use function is_dir;
+use function ltrim;
+use function mkdir;
+use function rmdir;
+use function rtrim;
+use function shell_exec;
+use function sprintf;
+use function str_replace;
+use function unlink;
 
-/**
- * Class StaticHandlerService
- */
 class StaticHandlerService extends Component
 {
     /** @var string $cachePath */
@@ -29,9 +38,18 @@ class StaticHandlerService extends Component
     /** @var Request $requestService */
     private $requestService;
 
+    /** @var DbConnection */
+    private $dbConnection;
+
+    /** @var DateTimeImmutable */
+    private $currentTime;
+
     /**
      * StaticHandlerService constructor
-     * @param array $config
+     *
+     * @param mixed[] $config
+     *
+     * @throws Throwable
      */
     public function __construct(array $config = [])
     {
@@ -48,15 +66,14 @@ class StaticHandlerService extends Component
         $sep = DIRECTORY_SEPARATOR;
 
         $this->cachePath = rtrim($this->cachePath, $sep) . $sep;
+
+        $this->currentTime = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 
     /**
      * Handles the incoming content
-     * @param string $content
-     * @param bool $cache
-     * @return string
      */
-    public function handleContent(string $content, $cache = true) : string
+    public function handleContent(string $content, bool $cache = true) : string
     {
         if (! $this->cachePath) {
             return $content;
@@ -92,23 +109,27 @@ class StaticHandlerService extends Component
             return $content;
         }
 
-        file_put_contents("{$cachePath}/index.html", $content);
+        file_put_contents($cachePath . '/index.html', $content);
 
         return $content;
     }
 
     /**
      * Clears the cache
-     * @throws LogicException
+     *
+     * @throws Throwable
      */
-    public function clearCache()
+    public function clearCache() : void
     {
         if (! $this->cachePath) {
             throw new LogicException('The cache path is not defined');
         }
 
         if ($this->nixBasedClearCache) {
-            shell_exec("rm -rf {$this->cachePath}/*");
+            shell_exec(sprintf('rm -rf %s/*', $this->cachePath));
+
+            $this->updateTrackingTable();
+
             return;
         }
 
@@ -125,5 +146,19 @@ class StaticHandlerService extends Component
         foreach ($ri as $file) {
             $file->isDir() ?  rmdir($file) : unlink($file);
         }
+
+        $this->updateTrackingTable();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function updateTrackingTable() : void
+    {
+        $this->dbConnection->createCommand()->delete(
+            '{{%craftstatictracking}}',
+            '`cacheBustOnUtcDate` <= "' . $this->currentTime->format(Craftstatic::MYSQL_DATE_TIME_FORMAT) . '"'
+        )
+        ->execute();
     }
 }

@@ -1,0 +1,8 @@
+parameters:
+    level: max
+    bootstrap: %currentWorkingDirectory%/phpstanbootstrap.php
+    ignoreErrors:
+        -'#Parameter \#1 \$condition of method craft\\db\\Query::where\(\) expects array, string given.#'
+
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon

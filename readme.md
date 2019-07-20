@@ -1,9 +1,22 @@
 # Craft Static
+
 ## Static file caching for Craft 3
 
 ## Installing
 
+(Please see section below for instructions on setting up the cron job to clear cache for future or expiring entries)
+
+### Composer
+
+From the command line run:
+
 `composer require buzzingpixel/craft-static`
+
+After installing via composer, go to your Craft CP > Settings > Plugins and install Craft Static.
+
+### Craft  Plugin Store
+
+The other way is through the plugin store in the Craft CP.
 
 ## Configuration
 
@@ -95,9 +108,23 @@ return [
 
 To purge static cache from the command line, run: `./craft craft-static/cache/purge`
 
+### Cron job
+
+Craft Static keeps track of future and expiring entries but in order for Craft Static to clear the static cache when an entry expires or it's previously future post date because past, you need to be running a cron job every minute. That command is:
+
+```bash
+./craft craft-static/cache/check-tracking
+```
+ 
+Here's an example of what that cron job might look like:
+
+```bash
+* * * * * /user/bin/php /path/to/projet/craft craft-static/cache/check-tracking >> /dev/null 2>&1
+```
+
 ## License
 
-Copyright 2018 BuzzingPixel, LLC
+Copyright 2019 BuzzingPixel, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
