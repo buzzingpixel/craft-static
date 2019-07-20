@@ -6,6 +6,7 @@ namespace buzzingpixel\craftstatic;
 
 use buzzingpixel\craftstatic\factories\QueryFactory;
 use buzzingpixel\craftstatic\models\SettingsModel;
+use buzzingpixel\craftstatic\services\CheckEntryTracking;
 use buzzingpixel\craftstatic\services\ProcessEntryTracking;
 use buzzingpixel\craftstatic\services\StaticHandlerService;
 use buzzingpixel\craftstatic\twigextensions\CraftStaticTwigExtension;
@@ -23,6 +24,10 @@ use yii\base\Event;
 
 class Craftstatic extends Plugin
 {
+    public const MYSQL_DATE_TIME_FORMAT = 'Y-m-d H:i:s';
+
+    public const DATE_TIME_PRECISION_FORMAT = 'Y-m-d\TH:i:s.uP';
+
     /** @var Craftstatic $plugin */
     public static $plugin;
 
@@ -99,6 +104,18 @@ class Craftstatic extends Plugin
         return new ProcessEntryTracking([
             'dbConnection' => Craft::$app->getDb(),
             'queryFactory' => new QueryFactory(),
+        ]);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getCheckEntryTracking() : CheckEntryTracking
+    {
+        return new CheckEntryTracking([
+            'queryFactory' => new QueryFactory(),
+            'staticHandler' => $this->getStaticHandler(),
+            'dbConnection' => Craft::$app->getDb(),
         ]);
     }
 }

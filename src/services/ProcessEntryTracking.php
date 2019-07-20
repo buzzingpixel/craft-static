@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic\services;
 
+use buzzingpixel\craftstatic\Craftstatic;
 use buzzingpixel\craftstatic\factories\QueryFactory;
 use craft\base\Component;
 use craft\db\Connection as DbConnection;
@@ -15,8 +16,6 @@ use Throwable;
 
 class ProcessEntryTracking extends Component
 {
-    private const DATE_PRECISION_FORMAT = 'Y-m-d\TH:i:s.uP';
-
     /** @var DbConnection */
     private $dbConnection;
     /** @var QueryFactory */
@@ -73,8 +72,8 @@ class ProcessEntryTracking extends Component
         }
 
         $postDate = DateTimeImmutable::createFromFormat(
-            self::DATE_PRECISION_FORMAT,
-            $entry->postDate->format(self::DATE_PRECISION_FORMAT)
+            Craftstatic::DATE_TIME_PRECISION_FORMAT,
+            $entry->postDate->format(Craftstatic::DATE_TIME_PRECISION_FORMAT)
         );
 
         $postDate = $postDate->setTimezone($this->utcTimezone);
@@ -93,7 +92,7 @@ class ProcessEntryTracking extends Component
         }
 
         $existingId  = null;
-        $dateCreated = $dateUpdated = $this->currentTime->format('Y-m-d H:i:s');
+        $dateCreated = $dateUpdated = $this->currentTime->format(Craftstatic::MYSQL_DATE_TIME_FORMAT);
         $uid         = StringHelper::UUID();
 
         $existingQuery = $this->queryFactory->createQuery()
@@ -114,7 +113,7 @@ class ProcessEntryTracking extends Component
                 'id' => $existingId,
                 'elementId' => $entry->id,
                 'type' => 'future_entry',
-                'cacheBustOnUtcDate' => $postDate->format('Y-m-d H:i:s'),
+                'cacheBustOnUtcDate' => $postDate->format(Craftstatic::MYSQL_DATE_TIME_FORMAT),
                 'dateCreated' => $dateCreated,
                 'dateUpdated' => $dateUpdated,
                 'uid' => $uid,
@@ -145,8 +144,8 @@ class ProcessEntryTracking extends Component
         }
 
         $expiryDate = DateTimeImmutable::createFromFormat(
-            self::DATE_PRECISION_FORMAT,
-            $entry->expiryDate->format(self::DATE_PRECISION_FORMAT)
+            Craftstatic::DATE_TIME_PRECISION_FORMAT,
+            $entry->expiryDate->format(Craftstatic::DATE_TIME_PRECISION_FORMAT)
         );
 
         $expiryDate = $expiryDate->setTimezone($this->utcTimezone);
@@ -165,7 +164,7 @@ class ProcessEntryTracking extends Component
         }
 
         $existingId  = null;
-        $dateCreated = $dateUpdated = $this->currentTime->format('Y-m-d H:i:s');
+        $dateCreated = $dateUpdated = $this->currentTime->format(Craftstatic::MYSQL_DATE_TIME_FORMAT);
         $uid         = StringHelper::UUID();
 
         $existingQuery = $this->queryFactory->createQuery()
@@ -186,7 +185,7 @@ class ProcessEntryTracking extends Component
                 'id' => $existingId,
                 'elementId' => $entry->id,
                 'type' => 'expiring_entry',
-                'cacheBustOnUtcDate' => $expiryDate->format('Y-m-d H:i:s'),
+                'cacheBustOnUtcDate' => $expiryDate->format(Craftstatic::MYSQL_DATE_TIME_FORMAT),
                 'dateCreated' => $dateCreated,
                 'dateUpdated' => $dateUpdated,
                 'uid' => $uid,
