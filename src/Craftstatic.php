@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace buzzingpixel\craftstatic;
 
+use buzzingpixel\craftstatic\factories\QueryFactory;
 use buzzingpixel\craftstatic\models\SettingsModel;
+use buzzingpixel\craftstatic\services\ProcessEntryTracking;
 use buzzingpixel\craftstatic\services\StaticHandlerService;
 use buzzingpixel\craftstatic\twigextensions\CraftStaticTwigExtension;
 use Craft;
 use craft\base\Plugin;
 use craft\console\Application as ConsoleApplication;
+use craft\elements\Entry;
+use craft\events\ElementEvent;
 use craft\events\RegisterCacheOptionsEvent;
 use craft\services\Elements;
 use craft\utilities\ClearCaches;
 use LogicException;
+use Throwable;
 use yii\base\Event;
 
 class Craftstatic extends Plugin
@@ -22,8 +27,6 @@ class Craftstatic extends Plugin
     public static $plugin;
 
     /**
-     * Initializes plugin
-     *
      * @throws LogicException
      */
     public function init() : void
@@ -36,8 +39,18 @@ class Craftstatic extends Plugin
         Event::on(
             Elements::class,
             Elements::EVENT_AFTER_SAVE_ELEMENT,
-            static function () : void {
-                self::getStaticHandler()->clearCache();
+            static function (ElementEvent $elementEvent) : void {
+                if ($elementEvent->element->getIsDraft()) {
+                    return;
+                }
+
+                self::$plugin->getStaticHandler()->clearCache();
+
+                if (! $elementEvent->element instanceof Entry) {
+                    return;
+                }
+
+                self::$plugin->getProcessEntryTracking()->process($elementEvent->element);
             }
         );
 
@@ -61,17 +74,11 @@ class Craftstatic extends Plugin
         $this->controllerNamespace = 'buzzingpixel\craftstatic\console\controllers';
     }
 
-    /**
-     * Creates the settings model
-     */
     protected function createSettingsModel() : SettingsModel
     {
         return new SettingsModel();
     }
 
-    /**
-     * Gets the static handler service
-     */
     public function getStaticHandler() : StaticHandlerService
     {
         /** @var SettingsModel $settings */
@@ -81,6 +88,17 @@ class Craftstatic extends Plugin
             'cachePath' => $settings->cachePath,
             'nixBasedClearCache' => $settings->nixBasedClearCache === true,
             'requestService' => Craft::$app->getRequest(),
+        ]);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function getProcessEntryTracking() : ProcessEntryTracking
+    {
+        return new ProcessEntryTracking([
+            'dbConnection' => Craft::$app->getDb(),
+            'queryFactory' => new QueryFactory(),
         ]);
     }
 }
