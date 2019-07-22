@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2019-07-22
+### Fixed
+- Fixed a bug where Craft Static was not compatible with Craft 3.1
+
 ## [2.0.0] - 2019-07-20
 ### New
 - Added tracking of future or expiring entries (note that in order to take advantage of this tracking, you'll need to be running a cron job as explained in the readme so that when an entry goes live from future dating or has expired the cache can be cleared)

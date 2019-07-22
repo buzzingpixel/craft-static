@@ -20,6 +20,7 @@ use craft\services\Elements;
 use craft\utilities\ClearCaches;
 use Throwable;
 use yii\base\Event;
+use function method_exists;
 
 class Craftstatic extends Plugin
 {
@@ -48,7 +49,9 @@ class Craftstatic extends Plugin
                     return;
                 }
 
-                if ($elementEvent->element->getIsDraft()) {
+                if (method_exists($elementEvent->element, 'getIsDraft') &&
+                    $elementEvent->element->getIsDraft()
+                ) {
                     return;
                 }
 
