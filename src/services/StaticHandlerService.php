@@ -7,6 +7,7 @@ namespace buzzingpixel\craftstatic\services;
 use buzzingpixel\craftstatic\Craftstatic;
 use craft\base\Component;
 use craft\db\Connection as DbConnection;
+use craft\services\Sites;
 use craft\web\Request;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -37,6 +38,9 @@ class StaticHandlerService extends Component
 
     /** @var Request $requestService */
     private $requestService;
+    
+    /** @var Sites $siteService */
+    private $siteService;
 
     /** @var DbConnection */
     private $dbConnection;
@@ -94,14 +98,21 @@ class StaticHandlerService extends Component
         }
 
         $sep = DIRECTORY_SEPARATOR;
-
+    
+        if ($this->siteService->getHasCurrentSite()) {
+            $site = $this->siteService->getCurrentSite();
+        } else {
+            $site = $this->_requestedSite($this->siteService);
+        }
+        
         $cachePath = $this->cachePath . ltrim(
             rtrim(
-                $this->requestService->getFullPath(),
+                $site->getBaseUrl() . $this->requestService->getFullPath(),
                 $sep
             ),
             $sep
         );
+        
 
         if (! @mkdir($cachePath, 0777, true) &&
             ! is_dir($cachePath)
