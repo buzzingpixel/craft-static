@@ -102,6 +102,7 @@ class Craftstatic extends Plugin
             'cachePath' => $settings->cachePath,
             'nixBasedClearCache' => $settings->nixBasedClearCache === true,
             'requestService' => Craft::$app->getRequest(),
+            'siteService' => Craft::$app->getSites(),
             'dbConnection' => Craft::$app->getDb(),
         ]);
     }
