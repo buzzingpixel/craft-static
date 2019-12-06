@@ -97,7 +97,7 @@ The cache will be purged any time an element is saved. It can also be cleared ma
 
 ### Cache Clearing via command line
 
-The cache can be cleared from the command line, but note that you must define the `cachePath` via custom config because `$_SERVER['DOCUMENT_ROOT']` is not defined when running on the console and you might end up deleting things on the server you didn't mean to. You can use a config setting something like this:
+The cache can be cleared from the command line, but note that you must define the `cachePath` via custom config because `$_SERVER['DOCUMENT_ROOT']` is not defined when running on the console and you might end up deleting things on the server you didn't mean to. Create a file craft-static.php and put it in your config directory. You can use a config setting something like this:
 
 ```php
 <?php
